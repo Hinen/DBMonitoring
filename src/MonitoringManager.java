@@ -1,6 +1,7 @@
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 public class MonitoringManager {
@@ -10,8 +11,12 @@ public class MonitoringManager {
     private SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private Date date = new Date();
 
+    private Map<String, String> statusMap = new HashMap<>();
+
     private MonitoringManager() {
         System.out.println("Initializing MonitoringManager...");
+
+        statusMap.put(Constants.StatusKey.MAX_CONNECTIONS, "150");
     }
 
     public void start() {
@@ -31,17 +36,24 @@ public class MonitoringManager {
             return;
 
         for (Map<String, String> map : variables) {
-            if (map.get("Variable_name").equals("max_connections"))
+            if (map.get("Variable_name").equals(Constants.StatusKey.MAX_CONNECTIONS))
                 checkMaxConnections(map);
         }
     }
 
     private void checkMaxConnections(Map<String, String> map) {
-        Integer value = Integer.parseInt(map.get("Value"));
+        String valueStr = map.get("Value");
+        Integer value = Integer.parseInt(valueStr);
         if (value == null)
             return;
 
-        if (value < 150)
+        int beforeValue = Integer.parseInt(statusMap.get(Constants.StatusKey.MAX_CONNECTIONS));
+        if (beforeValue >= 150 && value < 150) {
             System.out.println("warning : " + value);
+
+            // TODO SEND MAIL
+        }
+
+        statusMap.put(Constants.StatusKey.MAX_CONNECTIONS, valueStr);
     }
 }

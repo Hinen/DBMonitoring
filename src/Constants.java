@@ -10,4 +10,8 @@ public class Constants {
     public class Query {
         public static final String SHOW_VARIABLES = "SHOW VARIABLES";
     }
+
+    public class StatusKey {
+        public static final String MAX_CONNECTIONS = "max_connections";
+    }
 }
