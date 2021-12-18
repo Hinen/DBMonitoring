@@ -6,4 +6,8 @@ public class Constants {
         public static final String DB_USER_PASSWORD = "hinen@7084";
         public static final String DB_CONNECTION_OPTION = "autoReconnect=true&useSSL=false";
     }
+
+    public class Query {
+        public static final String SHOW_VARIABLES = "SHOW VARIABLES";
+    }
 }
