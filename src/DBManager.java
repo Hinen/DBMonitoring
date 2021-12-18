@@ -1,4 +1,7 @@
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DBManager {
     private static DBManager singleton = new DBManager();
@@ -24,13 +27,34 @@ public class DBManager {
         }
     }
 
-    public void start() {
+    public ArrayList<Map<String, String>> query(String sql) {
+        ArrayList<Map<String, String>> resultList = new ArrayList<>();
+
         try {
             if (isConnectionClosed())
                 connectToDB();
-        } catch (SQLException e) {
-            System.out.println(e);
+
+            // ???
+            if (isConnectionClosed())
+                return resultList;
+
+            resultSet = statement.executeQuery(sql);
+
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    Map<String, String> resultMap = new HashMap<>();
+                    for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++)
+                        resultMap.put(resultSet.getMetaData().getColumnName(i), resultSet.getString(i));
+
+                    resultList.add(resultMap);
+                }
+            }
+        } catch (SQLException se) {
+            connection = null;
+            statement = null;
         }
+
+        return resultList;
     }
 
     private boolean isConnectionClosed() throws SQLException {
