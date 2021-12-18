@@ -14,10 +14,10 @@ public class Main implements Runnable {
         }));
 
         DBManager.get();
+        MonitoringManager.get();
 
         while (true) {
-            String result = DBManager.get().queryGetValue("SHOW VARIABLES WHERE `Variable_name` = 'max_connections';", "Value");
-            System.out.println(result);
+            MonitoringManager.get().start();
 
             try {
                 Thread.sleep(10000);
