@@ -1,15 +1,10 @@
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MonitoringManager {
     private static MonitoringManager singleton = new MonitoringManager();
     public static MonitoringManager get() { return singleton; }
-
-    private SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private Date date = new Date();
 
     private Map<String, String> statusMap = new HashMap<>();
 
@@ -20,14 +15,9 @@ public class MonitoringManager {
     }
 
     public void start() {
-        System.out.println("----------\nCHECK TIME : " + getNowTime());
+        System.out.println("----------\nCHECK TIME : " + DateManager.get().getNowTime());
 
         checkVariables();
-    }
-
-    public String getNowTime() {
-        date.setTime(System.currentTimeMillis());
-        return dayTime.format(date);
     }
 
     private void checkVariables() {
