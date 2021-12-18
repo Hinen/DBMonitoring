@@ -48,6 +48,49 @@ public class DBManager {
         statement = connection.createStatement();
     }
 
+    public void closeConnection() {
+        if (resultSet == null)
+            System.out.println("DB resultSet is already null");
+        else {
+            try {
+                if (resultSet.isClosed())
+                    System.out.println("DB resultSet is already closed");
+                else
+                    resultSet.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        if (statement == null)
+            System.out.println("DB statement is already null");
+        else {
+            try {
+                if (statement.isClosed())
+                    System.out.println("DB statement is already closed");
+                else
+                    statement.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        if (connection == null)
+            System.out.println("DB connection is already null");
+        else {
+            try {
+                if (connection.isClosed())
+                    System.out.println("DB connection is already closed");
+                else
+                    connection.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        System.out.println("DB connection all closed");
+    }
+
     public ArrayList<Map<String, String>> query(String sql) {
         ArrayList<Map<String, String>> resultList = new ArrayList<>();
 
