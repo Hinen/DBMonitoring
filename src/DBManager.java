@@ -19,11 +19,9 @@ public class DBManager {
 
         try{
             Class.forName(JDBC_DRIVER);
-            connection = null;
-            statement = null;
-            resultSet = null;
+            connectToDB();
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -113,9 +111,14 @@ public class DBManager {
                     resultList.add(resultMap);
                 }
             }
+
+            resultSet.close();
         } catch (SQLException se) {
             connection = null;
             statement = null;
+            resultSet = null;
+
+            se.printStackTrace();
         }
 
         return resultList;
