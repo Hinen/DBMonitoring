@@ -27,6 +27,27 @@ public class DBManager {
         }
     }
 
+    private boolean isConnectionClosed() throws SQLException {
+        return connection == null ||
+                connection.isClosed() ||
+                statement == null ||
+                statement.isClosed();
+    }
+
+    private void connectToDB() throws SQLException {
+        connection = DriverManager.getConnection(
+                DB_URL +
+                        Constants.DBConfig.DB_HOST +
+                        ":" +
+                        Constants.DBConfig.DB_PORT +
+                        "?" +
+                        Constants.DBConfig.DB_CONNECTION_OPTION,
+                Constants.DBConfig.DB_USER_NAME,
+                Constants.DBConfig.DB_USER_PASSWORD);
+
+        statement = connection.createStatement();
+    }
+
     public ArrayList<Map<String, String>> query(String sql) {
         ArrayList<Map<String, String>> resultList = new ArrayList<>();
 
@@ -57,24 +78,23 @@ public class DBManager {
         return resultList;
     }
 
-    private boolean isConnectionClosed() throws SQLException {
-        return connection == null ||
-                connection.isClosed() ||
-                statement == null ||
-                statement.isClosed();
+    public ArrayList<String> query(String sql, String column) {
+        ArrayList<Map<String, String>> resultList = query(sql);
+        if (resultList == null)
+            return null;
+
+        ArrayList<String> result = new ArrayList<>();
+        for (int i = 0; i < resultList.size(); i++)
+            result.add(resultList.get(i).get(column));
+
+        return result;
     }
 
-    private void connectToDB() throws SQLException {
-        connection = DriverManager.getConnection(
-                DB_URL +
-                    Constants.DBConfig.DB_HOST +
-                    ":" +
-                    Constants.DBConfig.DB_PORT +
-                    "?" +
-                    Constants.DBConfig.DB_CONNECTION_OPTION,
-                Constants.DBConfig.DB_USER_NAME,
-                Constants.DBConfig.DB_USER_PASSWORD);
+    public String queryGetValue(String sql, String column) {
+        ArrayList<String> resultList = query(sql, column);
+        if (resultList == null || resultList.isEmpty())
+            return null;
 
-        statement = connection.createStatement();
+        return resultList.get(0);
     }
 }

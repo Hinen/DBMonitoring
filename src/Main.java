@@ -7,7 +7,8 @@ public class Main {
 
         new Thread(() -> {
             while (true) {
-                ArrayList<Map<String, String>> result = DBManager.get().query("SHOW VARIABLES;");
+                String result = DBManager.get().queryGetValue("SHOW VARIABLES WHERE `Variable_name` = 'max_connections';", "Value");
+                System.out.println(result);
 
                 try {
                     Thread.sleep(10000);
