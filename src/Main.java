@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.Map;
-
 public class Main implements Runnable {
     public static void main(String[] args) {
         Thread thread = new Thread(new Main());
