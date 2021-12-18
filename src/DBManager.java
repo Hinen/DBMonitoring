@@ -14,6 +14,8 @@ public class DBManager {
     private Statement statement;
     private ResultSet resultSet;
 
+    private Map<String, Boolean> sqlStatusMap = new HashMap<>();
+
     private DBManager() {
         System.out.println("Initializing DBManager...");
 
@@ -21,7 +23,7 @@ public class DBManager {
             Class.forName(JDBC_DRIVER);
             connectToDB();
         } catch (Exception e) {
-            e.printStackTrace();
+            SMTPManager.get().addMail(e);
         }
     }
 
@@ -55,8 +57,8 @@ public class DBManager {
                     System.out.println("DB resultSet is already closed");
                 else
                     resultSet.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+            } catch (SQLException e) {
+                SMTPManager.get().addMail(e);
             }
         }
 
@@ -68,8 +70,8 @@ public class DBManager {
                     System.out.println("DB statement is already closed");
                 else
                     statement.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+            } catch (SQLException e) {
+                SMTPManager.get().addMail(e);
             }
         }
 
@@ -81,8 +83,8 @@ public class DBManager {
                     System.out.println("DB connection is already closed");
                 else
                     connection.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+            } catch (SQLException e) {
+                SMTPManager.get().addMail(e);
             }
         }
 
@@ -113,12 +115,19 @@ public class DBManager {
             }
 
             resultSet.close();
-        } catch (SQLException se) {
+            sqlStatusMap.put(sql, true);
+        } catch (SQLException e) {
             connection = null;
             statement = null;
             resultSet = null;
 
-            se.printStackTrace();
+            // exception이 나면 쿼리문에 문제가 있을 확률이 높다.
+            if (!sqlStatusMap.containsKey(sql) || sqlStatusMap.get(sql)) {
+                SMTPManager.get().addMail(e);
+
+                // 중복으로 계속 메일을 보내지 않기 위해 실패한 status를 저장한다.
+                sqlStatusMap.put(sql, false);
+            }
         }
 
         return resultList;
