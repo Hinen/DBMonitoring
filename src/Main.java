@@ -13,11 +13,13 @@ public class Main implements Runnable {
             shutDown();
         }));
 
+        SMTPManager.get();
         DBManager.get();
         MonitoringManager.get();
 
         while (true) {
             MonitoringManager.get().start();
+            SMTPManager.get().start();
 
             try {
                 Thread.sleep(10000);

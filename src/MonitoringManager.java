@@ -41,7 +41,15 @@ public class MonitoringManager {
         if (beforeValue >= 150 && value < 150) {
             System.out.println("warning : " + value);
 
-            // TODO SEND MAIL
+            SMTPManager.get().addMail(
+                    "DB Max Connection에 문제 발생_" + DateManager.get().getNowTime(),
+                    "Monitoring DB Host : " + Constants.DBConfig.DB_HOST + "\n" +
+                            "Check Time : " + DateManager.get().getNowTime() + "\n\n" +
+                            "Before MaxConnection : " + beforeValue + "\n" +
+                            "After MaxConnection : " + value + "\n\n" +
+                            "위와 같이 MaxConnection 값에 문제가 발생했으므로 모니터링 결과를 공유합니다.",
+                    Constants.MonitoringType.MAX_CONNECTION
+            );
         }
 
         statusMap.put(Constants.StatusKey.MAX_CONNECTIONS, valueStr);
