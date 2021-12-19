@@ -1,15 +1,29 @@
 public class Main implements Runnable {
     public static void main(String[] args) {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            DBManager.get().closeConnection();
+        }));
+
+        // Main Thread
         Thread thread = new Thread(new Main());
         thread.start();
+
+        // Input Thread
+        new Thread(() -> {
+            while (true) {
+                InputManager.get().update();
+
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    System.out.println(e);
+                }
+            }
+        }).start();
     }
 
     @Override
     public void run() {
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            shutDown();
-        }));
-
         SMTPManager.get();
         DBManager.get();
         MonitoringManager.get();
@@ -24,9 +38,5 @@ public class Main implements Runnable {
                 System.out.println(e);
             }
         }
-    }
-
-    private void shutDown() {
-        DBManager.get().closeConnection();
     }
 }
