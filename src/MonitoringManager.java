@@ -6,12 +6,14 @@ public class MonitoringManager {
     private static MonitoringManager singleton = new MonitoringManager();
     public static MonitoringManager get() { return singleton; }
 
+    private static final int STANDARD_MAX_CONNECTION = 150;
+
     private Map<String, String> statusMap = new HashMap<>();
 
     private MonitoringManager() {
         System.out.println("Initializing MonitoringManager...");
 
-        statusMap.put(Constants.StatusKey.MAX_CONNECTIONS, "150");
+        statusMap.put(Constants.StatusKey.MAX_CONNECTIONS, Integer.toString(STANDARD_MAX_CONNECTION));
     }
 
     public void start() {
@@ -38,15 +40,12 @@ public class MonitoringManager {
             return;
 
         int beforeValue = Integer.parseInt(statusMap.get(Constants.StatusKey.MAX_CONNECTIONS));
-        if (beforeValue >= 150 && value < 150) {
-            System.out.println("warning : " + value);
-
+        if (beforeValue >= STANDARD_MAX_CONNECTION && value < STANDARD_MAX_CONNECTION) {
             SMTPManager.get().addMail(
                     "DB Max Connection에 문제 발생_" + DateManager.get().getNowTime(),
                     "Monitoring DB Host : " + Constants.DBConfig.DB_HOST + "\n" +
                             "Check Time : " + DateManager.get().getNowTime() + "\n\n" +
-                            "Before MaxConnection : " + beforeValue + "\n" +
-                            "After MaxConnection : " + value + "\n\n" +
+                            "Now MaxConnection : " + value + "\n\n" +
                             "위와 같이 MaxConnection 값에 문제가 발생했으므로 모니터링 결과를 공유합니다.",
                     Constants.MonitoringType.MAX_CONNECTION
             );
