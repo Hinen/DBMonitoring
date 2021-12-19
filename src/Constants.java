@@ -17,6 +17,7 @@ public class Constants {
 
     public static class Query {
         public static final String SHOW_VARIABLES = "SHOW VARIABLES";
+        public static final String SELECT_STUDENT = "SELECT * FROM mobile_system.student";
     }
 
     public static class StatusKey {
@@ -36,6 +37,8 @@ public class Constants {
         public static final int MONITORING_EXCEPTION = 3;
         public static final int SMTP_EXCEPTION = 4;
         public static final int MAX_CONNECTION = 5;
+        public static final int NEW_STUDENT = 6;
+        public static final int REMOVE_STUDENT = 7;
 
         public static String getMonitoringTypeStr(int type) {
             if (type == SERVER_ERROR)
@@ -48,6 +51,10 @@ public class Constants {
                 return "SMTP Exception";
             else if (type == MAX_CONNECTION)
                 return "Max Connection";
+            else if (type == NEW_STUDENT)
+                return "New Student";
+            else if (type == REMOVE_STUDENT)
+                return "Remove Student";
 
             return "";
         }
