@@ -22,6 +22,8 @@ public class Constants {
         public static final String SELECT_STUDENT = "SELECT * FROM mobile_system.student";
         public static final String SET_MAX_CONNECTIONS_140 = "SET GLOBAL max_connections = 140";
         public static final String SET_MAX_CONNECTIONS_150 = "SET GLOBAL max_connections = 150";
+        public static final String INSERT_STUDENT = "INSERT INTO mobile_system.student(`id`, `name`, `age`) VALUES(20192762, '박수빈', 25)";
+        public static final String REMOVE_STUDENT = "DELETE FROM mobile_system.student WHERE `id` = 20192762";
     }
 
     public static class StatusKey {

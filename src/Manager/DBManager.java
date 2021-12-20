@@ -15,6 +15,8 @@ public class DBManager {
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://";
 
+    private Object queryLock = new Object();
+
     private Connection connection;
     private Statement statement;
     private ResultSet resultSet;
@@ -67,6 +69,8 @@ public class DBManager {
             } catch (SQLException e) {
                 SMTPManager.get().addMail(e);
             }
+
+            resultSet = null;
         }
 
         if (statement == null)
@@ -80,6 +84,8 @@ public class DBManager {
             } catch (SQLException e) {
                 SMTPManager.get().addMail(e);
             }
+
+            statement = null;
         }
 
         if (connection == null)
@@ -93,54 +99,86 @@ public class DBManager {
             } catch (SQLException e) {
                 SMTPManager.get().addMail(e);
             }
+
+            connection = null;
         }
 
         System.out.println("DB connection all closed");
     }
 
-    public ArrayList<Map<String, String>> query(String sql) {
-        ArrayList<Map<String, String>> resultList = new ArrayList<>();
+    public boolean queryAndIsSuccess(String sql) {
+        synchronized (queryLock) {
+            try {
+                if (isConnectionClosed())
+                    connectToDB();
 
-        try {
-            if (isConnectionClosed())
-                connectToDB();
+                // ???
+                if (isConnectionClosed())
+                    return false;
 
-            // ???
-            if (isConnectionClosed())
-                return resultList;
+                statement.execute(sql);
+                sqlStatusMap.put(sql, true);
+            } catch (SQLException e) {
+                closeConnection();
 
-            if (statement.execute(sql)) {
-                resultSet = statement.executeQuery(sql);
+                // exception이 나면 쿼리문에 문제가 있을 확률이 높다.
+                if (!sqlStatusMap.containsKey(sql) || sqlStatusMap.get(sql)) {
+                    SMTPManager.get().addMail(e);
 
-                if (resultSet != null) {
-                    while (resultSet.next()) {
-                        Map<String, String> resultMap = new HashMap<>();
-                        for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++)
-                            resultMap.put(resultSet.getMetaData().getColumnName(i), resultSet.getString(i));
-
-                        resultList.add(resultMap);
-                    }
+                    // 중복으로 계속 메일을 보내지 않기 위해 실패한 status를 저장한다.
+                    sqlStatusMap.put(sql, false);
                 }
 
-                resultSet.close();
+                return false;
             }
 
-            sqlStatusMap.put(sql, true);
-        } catch (SQLException e) {
-            connection = null;
-            statement = null;
-            resultSet = null;
-
-            // exception이 나면 쿼리문에 문제가 있을 확률이 높다.
-            if (!sqlStatusMap.containsKey(sql) || sqlStatusMap.get(sql)) {
-                SMTPManager.get().addMail(e);
-
-                // 중복으로 계속 메일을 보내지 않기 위해 실패한 status를 저장한다.
-                sqlStatusMap.put(sql, false);
-            }
+            return true;
         }
+    }
 
-        return resultList;
+    public ArrayList<Map<String, String>> query(String sql) {
+        synchronized (queryLock) {
+            ArrayList<Map<String, String>> resultList = new ArrayList<>();
+
+            try {
+                if (isConnectionClosed())
+                    connectToDB();
+
+                // ???
+                if (isConnectionClosed())
+                    return resultList;
+
+                if (statement.execute(sql)) {
+                    resultSet = statement.executeQuery(sql);
+
+                    if (resultSet != null) {
+                        while (resultSet.next()) {
+                            Map<String, String> resultMap = new HashMap<>();
+                            for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++)
+                                resultMap.put(resultSet.getMetaData().getColumnName(i), resultSet.getString(i));
+
+                            resultList.add(resultMap);
+                        }
+                    }
+
+                    resultSet.close();
+                }
+
+                sqlStatusMap.put(sql, true);
+            } catch (SQLException e) {
+                closeConnection();
+
+                // exception이 나면 쿼리문에 문제가 있을 확률이 높다.
+                if (!sqlStatusMap.containsKey(sql) || sqlStatusMap.get(sql)) {
+                    SMTPManager.get().addMail(e);
+
+                    // 중복으로 계속 메일을 보내지 않기 위해 실패한 status를 저장한다.
+                    sqlStatusMap.put(sql, false);
+                }
+            }
+
+            return resultList;
+        }
     }
 
     public ArrayList<String> query(String sql, String column) {
