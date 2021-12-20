@@ -33,7 +33,8 @@ public class Constants {
     public static class SMTPTarget {
         // 모니터링 메일을 받을 이메일을 해당 배열에 추가해주세요.
         public static final String[] MAIL_RECEIVER = {
-                "qkrqldtjqj@gmail.com"
+                "qkrqldtjqj@gmail.com",
+                "kanghee.lee@ssu.ac.kr"
         };
     }
 
