@@ -9,6 +9,21 @@ public class Main implements Runnable {
             DBManager.get().closeConnection();
         }));
 
+        // SMTP Thread
+        new Thread(() -> {
+            SMTPManager.get();
+
+            while (true) {
+                SMTPManager.get().start();
+
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    System.out.println(e);
+                }
+            }
+        }).start();
+
         // Main Thread
         Thread thread = new Thread(new Main());
         thread.start();
@@ -29,13 +44,11 @@ public class Main implements Runnable {
 
     @Override
     public void run() {
-        SMTPManager.get();
         DBManager.get();
         MonitoringManager.get();
 
         while (true) {
             MonitoringManager.get().start();
-            SMTPManager.get().start();
 
             try {
                 Thread.sleep(5000);
