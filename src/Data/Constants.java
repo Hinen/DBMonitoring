@@ -3,7 +3,7 @@ package Data;
 public class Constants {
     public static class SMTPConfig {
         public static final String MAIL_USER = "hinen.monitoring@gmail.com";
-        public static final String MAIL_PASSWORD = "hinen@7084";
+        public static final String MAIL_PASSWORD = "aGluZW5ANzA4NA==";
         public static final String SMTP_TYPE = "smtp.gmail.com";
         public static final String TLS_VERSION = "TLSv1.2";
         public static final int SMTP_PORT = 587;
@@ -13,7 +13,7 @@ public class Constants {
         public static final String DB_HOST = "34.64.164.251";
         public static final String DB_PORT = "3306";
         public static final String DB_USER_NAME = "hinen";
-        public static final String DB_USER_PASSWORD = "hinen@7084";
+        public static final String DB_USER_PASSWORD = "aGluZW5ANzA4NA==";
         public static final String DB_CONNECTION_OPTION = "autoReconnect=true&useSSL=false";
     }
 

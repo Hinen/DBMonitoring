@@ -45,7 +45,8 @@ public class SMTPManager {
 
             session = Session.getDefaultInstance(prop, new javax.mail.Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(Constants.SMTPConfig.MAIL_USER, Constants.SMTPConfig.MAIL_PASSWORD);
+                    String pass = new String(Base64.getDecoder().decode(Constants.SMTPConfig.MAIL_PASSWORD));
+                    return new PasswordAuthentication(Constants.SMTPConfig.MAIL_USER, pass);
                 }
             });
 

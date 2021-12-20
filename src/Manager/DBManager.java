@@ -4,6 +4,7 @@ import Data.Constants;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +40,8 @@ public class DBManager {
     }
 
     private void connectToDB() throws SQLException {
+        String pass = new String(Base64.getDecoder().decode(Constants.DBConfig.DB_USER_PASSWORD));
+
         connection = DriverManager.getConnection(
                 DB_URL +
                         Constants.DBConfig.DB_HOST +
@@ -47,7 +50,7 @@ public class DBManager {
                         "?" +
                         Constants.DBConfig.DB_CONNECTION_OPTION,
                 Constants.DBConfig.DB_USER_NAME,
-                Constants.DBConfig.DB_USER_PASSWORD);
+                pass);
 
         statement = connection.createStatement();
     }
