@@ -3,7 +3,7 @@ package Data;
 public class Constants {
     public static class SMTPConfig {
         public static final String MAIL_USER = "hinen.monitoring@gmail.com";
-        public static final String MAIL_PASSWORD = "aGluZW5ANzA4NA==";
+        public static final String MAIL_PASSWORD = "eHhtbmhkZmtiZXNhdWFyaA==";
         public static final String SMTP_TYPE = "smtp.gmail.com";
         public static final String TLS_VERSION = "TLSv1.2";
         public static final int SMTP_PORT = 587;
