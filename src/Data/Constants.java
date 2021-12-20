@@ -42,9 +42,10 @@ public class Constants {
         public static final int DB_EXECUTE_QUERY_FAIL = 2;
         public static final int MONITORING_EXCEPTION = 3;
         public static final int SMTP_EXCEPTION = 4;
-        public static final int MAX_CONNECTION = 5;
-        public static final int NEW_STUDENT = 6;
-        public static final int REMOVE_STUDENT = 7;
+        public static final int MAX_CONNECTION_ERROR = 5;
+        public static final int MAX_CONNECTION_NORMAL = 6;
+        public static final int NEW_STUDENT = 7;
+        public static final int REMOVE_STUDENT = 8;
 
         public static String getMonitoringTypeStr(int type) {
             if (type == SERVER_ERROR)
@@ -55,8 +56,10 @@ public class Constants {
                 return "Monitoring Exception";
             else if (type == SMTP_EXCEPTION)
                 return "SMTP Exception";
-            else if (type == MAX_CONNECTION)
-                return "Max Connection";
+            else if (type == MAX_CONNECTION_ERROR)
+                return "Max Connection Error";
+            else if (type == MAX_CONNECTION_NORMAL)
+                return "Max Connection Normal";
             else if (type == NEW_STUDENT)
                 return "New Student";
             else if (type == REMOVE_STUDENT)

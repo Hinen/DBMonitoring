@@ -9,10 +9,18 @@ public class Main implements Runnable {
             DBManager.get().closeConnection();
         }));
 
+        // Manager Init
+        SMTPManager.get();
+        DBManager.get();
+        MonitoringManager.get();
+
+        System.out.println("1 : DB의 MaxConnections 값을 140으로 내립니다.");
+        System.out.println("2 : DB의 MaxConnections 값을 150으로 올립니다.");
+        System.out.println("3 : DB에 박수빈 Student를 Insert합니다.");
+        System.out.println("4 : DB에 박수빈 Student를 Remove합니다.");
+
         // SMTP Thread
         new Thread(() -> {
-            SMTPManager.get();
-
             while (true) {
                 SMTPManager.get().start();
 
@@ -44,9 +52,6 @@ public class Main implements Runnable {
 
     @Override
     public void run() {
-        DBManager.get();
-        MonitoringManager.get();
-
         while (true) {
             MonitoringManager.get().start();
 

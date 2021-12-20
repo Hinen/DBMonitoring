@@ -60,12 +60,24 @@ public class MonitoringManager {
         int beforeValue = Integer.parseInt(statusMap.get(Constants.StatusKey.MAX_CONNECTIONS));
         if (beforeValue >= STANDARD_MAX_CONNECTION && value < STANDARD_MAX_CONNECTION) {
             SMTPManager.get().addMail(
-                    "DB Max Connection에 문제 발생_" + DateManager.get().getNowTime(),
+                    "DB Max Connection 문제 발생_" + DateManager.get().getNowTime(),
                     "Monitoring DB Host : " + Constants.DBConfig.DB_HOST + "\n" +
                             "Check Time : " + DateManager.get().getNowTime() + "\n\n" +
+                            "Before MaxConnection : " + beforeValue + "\n" +
                             "Now MaxConnection : " + value + "\n\n" +
                             "위와 같이 MaxConnection 값에 문제가 발생했으므로 모니터링 결과를 공유합니다.",
-                    Constants.MonitoringType.MAX_CONNECTION
+                    Constants.MonitoringType.MAX_CONNECTION_ERROR
+            );
+        }
+        else if (beforeValue < STANDARD_MAX_CONNECTION && value >= STANDARD_MAX_CONNECTION) {
+            SMTPManager.get().addMail(
+                    "DB Max Connection 정상 복구_" + DateManager.get().getNowTime(),
+                    "Monitoring DB Host : " + Constants.DBConfig.DB_HOST + "\n" +
+                            "Check Time : " + DateManager.get().getNowTime() + "\n\n" +
+                            "Before MaxConnection : " + beforeValue + "\n" +
+                            "Now MaxConnection : " + value + "\n\n" +
+                            "위와 같이 MaxConnection 값이 정상 복구 했으므로 모니터링 결과를 공유합니다.",
+                    Constants.MonitoringType.MAX_CONNECTION_NORMAL
             );
         }
 
