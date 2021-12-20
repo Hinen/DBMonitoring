@@ -1,5 +1,7 @@
 package Manager;
 
+import Data.Constants;
+
 import java.util.Scanner;
 
 public class InputManager {
@@ -15,9 +17,15 @@ public class InputManager {
             switch (input) {
                 case 1:
                     // Max Connection 140 으로
+                    DBManager.get().query(Constants.Query.SET_MAX_CONNECTIONS_140);
+                    System.out.println(Constants.Query.SET_MAX_CONNECTIONS_140);
+                    System.out.println("Success Set Max Connections to 140");
                     break;
                 case 2:
                     // Max Connection 150 으로
+                    DBManager.get().query(Constants.Query.SET_MAX_CONNECTIONS_150);
+                    System.out.println(Constants.Query.SET_MAX_CONNECTIONS_150);
+                    System.out.println("Success Set Max Connections to 150");
                     break;
                 case 3:
                     // 20192762 박수빈 학생 추가

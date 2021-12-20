@@ -109,19 +109,22 @@ public class DBManager {
             if (isConnectionClosed())
                 return resultList;
 
-            resultSet = statement.executeQuery(sql);
+            if (statement.execute(sql)) {
+                resultSet = statement.executeQuery(sql);
 
-            if (resultSet != null) {
-                while (resultSet.next()) {
-                    Map<String, String> resultMap = new HashMap<>();
-                    for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++)
-                        resultMap.put(resultSet.getMetaData().getColumnName(i), resultSet.getString(i));
+                if (resultSet != null) {
+                    while (resultSet.next()) {
+                        Map<String, String> resultMap = new HashMap<>();
+                        for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++)
+                            resultMap.put(resultSet.getMetaData().getColumnName(i), resultSet.getString(i));
 
-                    resultList.add(resultMap);
+                        resultList.add(resultMap);
+                    }
                 }
+
+                resultSet.close();
             }
 
-            resultSet.close();
             sqlStatusMap.put(sql, true);
         } catch (SQLException e) {
             connection = null;

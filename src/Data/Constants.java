@@ -20,6 +20,8 @@ public class Constants {
     public static class Query {
         public static final String SHOW_VARIABLES = "SHOW VARIABLES";
         public static final String SELECT_STUDENT = "SELECT * FROM mobile_system.student";
+        public static final String SET_MAX_CONNECTIONS_140 = "SET GLOBAL max_connections = 140";
+        public static final String SET_MAX_CONNECTIONS_150 = "SET GLOBAL max_connections = 150";
     }
 
     public static class StatusKey {
