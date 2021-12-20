@@ -1,3 +1,5 @@
+package Data;
+
 public class Constants {
     public static class SMTPConfig {
         public static final String MAIL_USER = "hinen.monitoring@gmail.com";

@@ -1,3 +1,8 @@
+import Manager.DBManager;
+import Manager.InputManager;
+import Manager.MonitoringManager;
+import Manager.SMTPManager;
+
 public class Main implements Runnable {
     public static void main(String[] args) {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {

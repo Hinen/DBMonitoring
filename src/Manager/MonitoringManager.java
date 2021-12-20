@@ -1,3 +1,8 @@
+package Manager;
+
+import Data.Constants;
+import Model.StudentModel;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +18,7 @@ public class MonitoringManager {
     private List<StudentModel> studentModelList;
 
     private MonitoringManager() {
-        System.out.println("Initializing MonitoringManager...");
+        System.out.println("Initializing Manager.MonitoringManager...");
 
         // MAX_CONNECTIONS은 150을 기준으로
         statusMap.put(Constants.StatusKey.MAX_CONNECTIONS, Integer.toString(STANDARD_MAX_CONNECTION));

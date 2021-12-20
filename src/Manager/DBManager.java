@@ -1,3 +1,7 @@
+package Manager;
+
+import Data.Constants;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +21,7 @@ public class DBManager {
     private Map<String, Boolean> sqlStatusMap = new HashMap<>();
 
     private DBManager() {
-        System.out.println("Initializing DBManager...");
+        System.out.println("Initializing Manager.DBManager...");
 
         try{
             Class.forName(JDBC_DRIVER);

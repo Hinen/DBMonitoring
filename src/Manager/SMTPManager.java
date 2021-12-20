@@ -1,3 +1,7 @@
+package Manager;
+
+import Data.Constants;
+
 import javax.mail.*;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -29,7 +33,7 @@ public class SMTPManager {
     private List<MessagingException> exceptionList = Collections.synchronizedList(new LinkedList<MessagingException>());
 
     private SMTPManager() {
-        System.out.println("Initializing SMTPManager...");
+        System.out.println("Initializing Manager.SMTPManager...");
 
         try {
             prop = new Properties();
