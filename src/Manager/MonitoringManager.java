@@ -25,12 +25,6 @@ public class MonitoringManager {
 
         // 기존 학생들 추가
         studentModelList = StudentModel.getStudentList();
-        for (StudentModel studentModel : studentModelList) {
-            if (studentModel == null)
-                continue;
-
-            statusMap.put(Integer.toString(studentModel.id), "true");
-        }
     }
 
     public void start() {
